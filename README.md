@@ -10,6 +10,9 @@ Contact me by [github:heyderpd](https://github.com/heyderpd). I'll be glad to he
 
 ## Thanks for [npm~lucasmreis](https://www.npmjs.com/~lucasmreis)
 
+* The mask accept only number in this version
+* Mask accept any char, but '_' is a placeholder for the number
+
 Example:
 ```javascript
 import InputMask from 'input-mask'
