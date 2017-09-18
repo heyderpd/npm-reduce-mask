@@ -1,69 +1,55 @@
 import React from 'react'
 
-const getCursor = elm => {
-  if (elm)  {
-    return elm.selectionEnd > elm.selectionStart
-      ? elm.selectionEnd
-      : elm.selectionStart
-  }
-  return -1
-}
-
-const getClearValuesAndCursor = elm => {
-  const cursor = getCursor(elm)
-  const values = elm
+const createMaskValue = (mask, maskMap) => elm => {
+  const nomask = elm
     .value
+    .replace(/\D/g, '')
     .split('')
-    .map(char => /\d/
-      .test(char)
-        ? char
-        : undefined)
-  const offset = cursor >= 0
-    ? values
-      .reduce(
-      (acc, char, index) => (index < cursor && char === undefined)
-        ? acc +1
-        : acc,
-      0)
-    : 0
-  return {
-    cursor: cursor -offset,
-    values: values.filter(Boolean)
-  }
+  const limit = nomask.length
+
+  const maskedValue = maskMap
+    .reduce((acc, placeHolder, key) => {
+      if (key < limit) {
+        acc[placeHolder] = nomask[key]
+      }
+      return acc
+    }, mask.split(''))
+
+  const lastChar = maskMap[limit - 1] >= 0
+    ? maskMap[limit - 1] + 1
+    : maskedValue.length
+
+  return maskedValue
+    .slice(0, lastChar)
+    .join('')
 }
 
-const createMaskValue = (mask, maskMap) => {
-  const splitMask = mask.split('')
+const createGetValidCursor = maskMap => elm => {
+  if (elm && elm.selectionStart >= 0) {
+    const cursor = elm.selectionStart
 
-  return nomask => {
-    const limit = nomask.length
-    if (limit) {
-      const maskedValue = maskMap
-        .reduce((acc, placeHolder, index) => {
-          if (index < limit) {
-            acc[placeHolder] = nomask[index]
-          }
-          return acc
-        }, splitMask)
+    if (maskMap.indexOf(cursor -1) < 0) {
+      const validCursor = maskMap
+        .reduceRight((acc, maskKey) => {
+          return cursor < maskKey
+            ? maskKey
+            : acc
+        }, -1)
+      return validCursor
 
-      const lastChar = maskMap[limit - 1] >= 0
-        ? maskMap[limit - 1] + 1
-        : maskedValue.length
-      return maskedValue.slice(0, lastChar).join('')
+    } else {
+      return cursor
     }
-    return ''
   }
 }
 
-const createSetValidCursor = maskMap => (elm, cursor) => {
-  const validCursor = maskMap[cursor]
-  if (validCursor >= 0 && elm && elm.selectionStart >= 0) {
-    elm.selectionStart = validCursor
-    elm.selectionEnd = validCursor
+const moveCursor = (elm, cursor) => {
+  if (cursor >= 0 && elm && elm.selectionStart >= 0) {
+    elm.selectionStart = elm.selectionEnd = cursor
   }
 }
 
-const applyMask = ({ mask }) => {
+const applyMask = ({ mask, onChange }) => {
   const maskMap = mask
     .split('')
     .reduce((acc, char, key) => {
@@ -72,17 +58,33 @@ const applyMask = ({ mask }) => {
       }
       return acc
     }, [])
+
   const maskValue = createMaskValue(mask, maskMap)
-  const setValidCursor = createSetValidCursor(maskMap)
+  const getValidCursor = createGetValidCursor(maskMap)
 
   return evt => {
     evt.preventDefault()
-    const elm = evt.target
-    const { cursor, values } = getClearValuesAndCursor(elm)
-    elm.value = maskValue(values)
-    setValidCursor(elm, cursor)
-    return elm
+    try {
+      const elm = evt.target
+      if (elm && elm.value && elm.value.length) {
+        const cursor = getValidCursor(elm)
+        elm.value = maskValue(elm)
+        moveCursor(elm, cursor)
+      }
+      onChange(evt)
+      return elm
+
+    } catch (err) {
+      onChange(evt)
+    }
   }
 }
 
-export default props => (<input {...props} type='text' onChange={applyMask(props)} />)
+const inputMask = props => (
+  <input
+    {...props}
+    type='text'
+    onChange={applyMask(props)}
+  />)
+
+export default inputMask
