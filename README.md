@@ -13,6 +13,8 @@ Contact me by [github:heyderpd](https://github.com/heyderpd). I'll be glad to he
 * The mask accept only number in this version
 * Mask accept any char, but '_' is a placeholder for the number
 
+![ScreenShot](https://raw.githubusercontent.com/heyderpd/npm-reduce-mask/master/example.gif)
+
 Example:
 ```javascript
 import InputMask from 'input-mask'
