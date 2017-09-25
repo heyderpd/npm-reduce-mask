@@ -4,10 +4,10 @@ import { hasSelection } from './utils'
 import PureInputMask from './mask-react'
 import InputNumber from './simple'
 
-const InputMask = (props) => {
+const ReduceMask = (props) => {
   return hasSelection()
     ? (<PureInputMask  {...props} />)
     : (<InputNumber  {...props} />)
 }
 
-export default InputMask
+export default ReduceMask

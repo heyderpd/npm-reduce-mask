@@ -1,9 +1,9 @@
 # REDUCE MAKS
-Simple and light mask in react
+## works in mobile
+Simple and light mask in react, can use mult mask for same input
 
 ## in the future:
 Other formats than numbers
-Angular support too
 
 ## I will help if you have any difficulty =)
 Contact me by [github:heyderpd](https://github.com/heyderpd). I'll be glad to help you.
@@ -14,24 +14,34 @@ Contact me by [github:heyderpd](https://github.com/heyderpd). I'll be glad to he
 * Mask accept any char, but '_' is a placeholder for the number
 
 ![ScreenShot](https://raw.githubusercontent.com/heyderpd/npm-reduce-mask/master/example.gif)
+![ScreenShot](https://raw.githubusercontent.com/heyderpd/npm-reduce-mask/master/mult-mask.gif)
+
+Example of Mult Mask:
+```javascript
+import ReduceMask from 'reduce-mask'
+
+<ReduceMask
+  name='mult-mask'
+  mask={['___.___.___-__', '(__.___.___/____-__']}
+  placeholder='Ex: (99) 1234-5678'
+/>
+```
 
 Example:
 ```javascript
-import InputMask from 'input-mask'
-
-<InputMask
+<ReduceMask
   name='phone'
   mask='(__) ____-_____'
   placeholder='Ex: (99) 1234-5678'
 />
 
-<InputMask
+<ReduceMask
   name='cpf'
   mask='___.___.___-__'
   placeholder='Ex: 123.456.789-12'
 />
 
-<InputMask
+<ReduceMask
   name='cnpj'
   mask='__.___.___/____-__'
   placeholder='Ex: 12.456.789/1234-56'
