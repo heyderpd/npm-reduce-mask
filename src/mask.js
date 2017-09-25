@@ -1,7 +1,7 @@
 import React from 'react'
 import { getCursor, setValidCursor, safeCall, getSmallerMask, createkMap } from './utils'
 
-const getClearValuesAndCursor = elm => {
+export const getClearValuesAndCursor = elm => {
   const cursor = getCursor(elm)
   const values = elm
     .value
@@ -22,7 +22,7 @@ const getClearValuesAndCursor = elm => {
   }
 }
 
-const createMaskValue = maskList => nomask => {
+export const createMaskValue = maskList => nomask => {
   const limit = nomask.length
   const maskObj = getSmallerMask(maskList, limit)
   if (limit) {
@@ -41,13 +41,13 @@ const createMaskValue = maskList => nomask => {
   return ''
 }
 
-const createSetValidCursor = maskMap => (elm, values, cursor) => {
+export const createSetValidCursor = maskList => (elm, values, cursor) => {
   if (!elm) {
     return
   }
 
   const maskObj = getSmallerMask(maskList, values.length)
-  return setValidCursor(maskObj.map[cursor])
+  return setValidCursor(elm, maskObj.map[cursor])
 }
 
 const applyMask = ({ mask, onChange }) => {
@@ -75,6 +75,4 @@ const applyMask = ({ mask, onChange }) => {
   }
 }
 
-const PureInputMask = props => (<input {...props} type='tel' onChange={applyMask(props)} />)
-
-export default PureInputMask
+export default applyMask
