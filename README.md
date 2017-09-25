@@ -22,9 +22,9 @@ Example of Mult Mask:
 import ReduceMask from 'reduce-mask'
 
 <ReduceMask
-  name='mult-mask'
-  mask={['___.___.___-__', '(__.___.___/____-__']}
-  placeholder='Ex: (99) 1234-5678'
+  name='cpf/cnpj'
+  mask={['___.___.___-__', '__.___.___/____-__']}
+  placeholder='Ex: 123.456.789-12'
 />
 ```
 
