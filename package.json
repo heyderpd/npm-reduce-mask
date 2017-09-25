@@ -1,6 +1,6 @@
 {
   "name": "reduce-mask",
-  "version": "0.7.3",
+  "version": "0.7.5",
   "description": "",
   "main": "dist/index.js",
   "scripts": {

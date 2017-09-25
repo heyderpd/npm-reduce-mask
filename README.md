@@ -1,5 +1,6 @@
 # REDUCE MAKS
-## works in mobile
+!! Works in mobile !!
+
 Simple and light mask in react, can use mult mask for same input
 
 ## in the future:
