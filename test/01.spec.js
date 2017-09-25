@@ -2,6 +2,8 @@ const assert = require('assert')
 
 import { hasSelection, getCursor, setValidCursor, getSmallerMask, createkMap } from '../src/utils'
 
+global.document = {createElement: () => ({selectionStart: 1, selectionEnd: 2})}
+
 describe('getSmallerMask', function() {
   const maskList = [
     {map: {length: 8}},
@@ -65,8 +67,6 @@ describe('createkMap', function() {
 })
 
 describe('hasSelection', function() {
-  GLOBAL.document = {createElement: () => ({selectionStart: 1, selectionEnd: 2})}
-
   it('undefined and false', () => {
     assert.deepEqual(
       hasSelection(),
