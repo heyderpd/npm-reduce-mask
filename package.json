@@ -1,6 +1,6 @@
 {
   "name": "reduce-mask",
-  "version": "0.7.6",
+  "version": "0.7.7",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -35,8 +35,8 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0"
   },
   "dependencies": {
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
-    "react-scripts": "^1.0.10"
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-scripts": "^1.1.0"
   }
 }
