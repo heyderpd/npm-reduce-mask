@@ -14,10 +14,9 @@ class PureInputMask extends Component {
     const { maskValue, onChange } = applyMask(this.props)
     this.onChange = onChange
     this.setState({
-      defaultValue: maskValue(this.props.defaultValue)
+      defaultValue: maskValue(this.props.defaultValue || '')
     })
   }
-
 
   render () {
     const { maxLength, value, ...props } = this.props
