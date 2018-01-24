@@ -25,6 +25,7 @@ import ReduceMask from 'reduce-mask'
   name='cpf/cnpj'
   mask={['___.___.___-__', '__.___.___/____-__']}
   placeholder='Ex: 123.456.789-12'
+  defaultValue='12345678912'
 />
 ```
 
@@ -34,6 +35,7 @@ Example:
   name='phone'
   mask='(__) ____-_____'
   placeholder='Ex: (99) 1234-5678'
+  defaultValue='9912345678'
 />
 
 <ReduceMask

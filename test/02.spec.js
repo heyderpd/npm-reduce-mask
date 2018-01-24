@@ -119,7 +119,7 @@ describe('applyMask and onChange pass', function() {
   const countFx = () => count += 3
 
   const reacElm = { mask: ['____-____', '(__) _____-____'], onChange: countFx }
-  const apply = applyMask(reacElm)
+  const { maskValue, onChange } = applyMask(reacElm)
   const evt = {
     preventDefault: x=>x,
     target: { selectionStart: 5, selectionEnd: 5, value: '=1 2k34-5' }
@@ -127,19 +127,19 @@ describe('applyMask and onChange pass', function() {
 
   it('small', () => {
     assert.deepEqual(
-      apply(evt),
+      onChange(evt),
       { selectionStart: 2, selectionEnd: 2, value: '1234-5' })
   })
 
   it('big', () => {
     evt.target.value = '=169 20k*304-85'
     assert.deepEqual(
-      apply(evt),
+      onChange(evt),
       { selectionStart: 2, selectionEnd: 2, value: '(16) 92030-485' })
   })
 
   it('onChange', () => {
-    apply({})
+    onChange({})
     assert.deepEqual(
       9,
       count)

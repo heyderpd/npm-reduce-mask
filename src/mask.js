@@ -58,7 +58,7 @@ const applyMask = ({ mask, onChange }) => {
   const maskValue = createMaskValue(maskMap)
   const setValidCursor = createSetValidCursor(maskMap)
 
-  return evt => {
+  const onChangeReduce = evt => {
     try {
       evt.preventDefault()
       const elm = evt.target
@@ -72,6 +72,11 @@ const applyMask = ({ mask, onChange }) => {
     } catch (err) {
       safeOnChange(evt)
     }
+  }
+
+  return {
+    maskValue,
+    onChange: onChangeReduce
   }
 }
 
