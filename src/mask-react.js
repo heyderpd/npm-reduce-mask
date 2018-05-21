@@ -1,20 +1,28 @@
 import React, { Component } from 'react'
-import applyMask from './mask'
+import createMask from './mask'
+import { ifNumberConvertToString } from './utils'
 
 class PureInputMask extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      defaultValue: ''
+      defaultValue: '',
+      value: ''
     }
   }
 
+  updateValue(value) {
+    this.setState({ value })
+  }
+
   componentWillMount() {
-    const { maskValue, onChange } = applyMask(this.props)
+    const { maskValue, onChange } = createMask(this.props, this.updateValue.bind(this))
     this.onChange = onChange
+
+    const value = ifNumberConvertToString(this.props.defaultValue || '')
     this.setState({
-      defaultValue: maskValue(this.props.defaultValue || '')
+      defaultValue: maskValue(value)
     })
   }
 

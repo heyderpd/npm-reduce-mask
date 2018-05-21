@@ -1,5 +1,15 @@
 import React from 'react'
-import { getCursor, setValidCursor, safeCall, getSmallerMask, createkMap } from './utils'
+import {
+  getCursor,
+  setValidCursor,
+  safeCall,
+  getSmallerMask,
+  createkMap,
+  ifNumberConvertToString,
+  isString,
+  onlyNumbers,
+  isArrayOfStringsAndHasLenght
+} from './utils'
 
 export const getClearValuesAndCursor = elm => {
   const cursor = getCursor(elm)
@@ -22,7 +32,15 @@ export const getClearValuesAndCursor = elm => {
   }
 }
 
-export const createMaskValue = maskList => nomask => {
+const isValidArrayOfMask = obj => isString(obj) || isArrayOfStringsAndHasLenght(obj)
+
+export const createMaskValue = maskList => originalValue => {
+  const values = ifNumberConvertToString(originalValue)
+  if (maskList === null) {
+    return originalValue
+  }
+  const nomask = isString(values) ? values.split('') : values
+
   const limit = nomask.length
   const maskObj = getSmallerMask(maskList, limit)
   if (limit) {
@@ -50,7 +68,15 @@ export const createSetValidCursor = maskList => (elm, values, cursor) => {
   return setValidCursor(elm, maskObj.map[cursor])
 }
 
-const applyMask = ({ mask, onChange }) => {
+const cloneEvt = evt => ({
+  ...evt,
+  target: {
+    ...evt.target,
+    value: onlyNumbers(evt.target.value)
+  }
+})
+
+const createMask = ({ mask, onChange }, updateValue) => {
   const safeOnChange = typeof onChange === 'function'
     ? onChange
     : x => x
@@ -59,19 +85,22 @@ const applyMask = ({ mask, onChange }) => {
   const setValidCursor = createSetValidCursor(maskMap)
 
   const onChangeReduce = evt => {
+    const elm = evt && evt.target
     try {
       evt.preventDefault()
-      const elm = evt.target
       const { cursor, values } = getClearValuesAndCursor(elm)
 
       elm.value = maskValue(values)
+      updateValue(elm.value)
       safeCall(() => setValidCursor(elm, values, cursor))
-      safeOnChange(evt)
-      return elm
 
-    } catch (err) {
+      const fakeEvt = cloneEvt(evt)
+      safeOnChange(fakeEvt)
+
+    } catch (error) {
       safeOnChange(evt)
     }
+    return elm
   }
 
   return {
@@ -80,4 +109,4 @@ const applyMask = ({ mask, onChange }) => {
   }
 }
 
-export default applyMask
+export default createMask

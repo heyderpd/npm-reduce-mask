@@ -1,7 +1,7 @@
 const assert = require('assert')
 
 import { createkMap } from '../src/utils'
-import applyMask, { getClearValuesAndCursor, createMaskValue, createSetValidCursor } from '../src/mask'
+import createMask, { getClearValuesAndCursor, createMaskValue, createSetValidCursor } from '../src/mask'
 global.window = false
 
 describe('getClearValuesAndCursor', function() {
@@ -114,12 +114,12 @@ describe('createSetValidCursor', function() {
   })
 })
 
-describe('applyMask and onChange pass', function() {
+describe('createMask and onChange pass', function() {
   let count = 0
   const countFx = () => count += 3
 
   const reacElm = { mask: ['____-____', '(__) _____-____'], onChange: countFx }
-  const { maskValue, onChange } = applyMask(reacElm)
+  const { maskValue, onChange } = createMask(reacElm, x=>x)
   const evt = {
     preventDefault: x=>x,
     target: { selectionStart: 5, selectionEnd: 5, value: '=1 2k34-5' }
@@ -132,10 +132,10 @@ describe('applyMask and onChange pass', function() {
   })
 
   it('big', () => {
-    evt.target.value = '=169 20k*304-85'
+    evt.target.value = '=169 20k*304-85 169 20k*304-85 169 20k*304-85 169 20k*304-85'
     assert.deepEqual(
       onChange(evt),
-      { selectionStart: 2, selectionEnd: 2, value: '(16) 92030-485' })
+      { selectionStart: 2, selectionEnd: 2, value: '(16) 92030-4851' })
   })
 
   it('onChange', () => {
