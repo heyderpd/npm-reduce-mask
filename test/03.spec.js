@@ -4,53 +4,48 @@ import { configure, mount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-15'
 import assert from 'assert'
 
-import ReactMask from '../src/mask-react'
+import ReactMask from '../src/index'
 
 configure({ adapter: new Adapter() })
 
-const initDom = () => {
-  const doc = jsdom('<!doctype html><html><body><div id="root"></div></body></html>')
-  global.document = doc
-  global.window = doc.defaultView
-}
-
-const removeDom = () => {
-  delete global.document
-  delete global.window
-}
-
 describe('react test', function() {
-  before(initDom)
+  before(() => {
+    const doc = jsdom('<!doctype html><html><body><div id="root"></div></body></html>')
+    global.document = doc
+    global.window = doc.defaultView
+  })
 
-  after(removeDom)
+  after(() => {
+    delete global.document
+    delete global.window
+  })
 
   it('undefined', () => {
     const wrapper = mount(<ReactMask />)
     assert.deepEqual(
       wrapper.state(),
-      { defaultValue: '', value: '' })
+      { value: '', isChanged: false })
   })
 
   it('with mask', () => {
     const wrapper = mount(<ReactMask mask={['___-___']} />)
     assert.deepEqual(
       wrapper.state(),
-      { defaultValue: '', value: '' })
+      { value: '', isChanged: false })
   })
-
 
   it('with defaultValue', () => {
     const wrapper = mount(<ReactMask defaultValue='456789' />)
     assert.deepEqual(
       wrapper.state(),
-      { defaultValue: '456789', value: '' })
+      { value: '456789', isChanged: false })
   })
 
   it('with mask and defaultValue', () => {
     const wrapper = mount(<ReactMask mask={['___-___']} defaultValue='456789' />)
     assert.deepEqual(
       wrapper.state(),
-      { defaultValue: '456-789', value: '' })
+      { value: '456-789', isChanged: false })
   })
 
   const sendChange = (wrapper, value) => {
@@ -71,7 +66,7 @@ describe('react test', function() {
 
     assert.deepEqual(
       wrapper.state(),
-      { defaultValue: '456-789', value: '' })
+      { value: '456-789', isChanged: false })
 
     sendChange(wrapper, '753951')
 
@@ -81,7 +76,7 @@ describe('react test', function() {
 
     assert.deepEqual(
       wrapper.state(),
-      { defaultValue: '456-789', value: '753-951' })
+      { value: '753-951', isChanged: true })
 
     sendChange(wrapper, '852-654xx')
 
@@ -91,7 +86,7 @@ describe('react test', function() {
 
     assert.deepEqual(
       wrapper.state(),
-      { defaultValue: '456-789', value: '852-654' })
+      { value: '852-654', isChanged: true })
   })
 
   it('advance', () => {
@@ -107,7 +102,7 @@ describe('react test', function() {
 
     assert.deepEqual(
       wrapper.state(),
-      { defaultValue: '852-852', value: '' })
+      { value: '852-852', isChanged: false })
 
     sendChange(wrapper, '753951753951')
 
@@ -117,7 +112,7 @@ describe('react test', function() {
 
     assert.deepEqual(
       wrapper.state(),
-      { defaultValue: '852-852', value: '753-xy9517*5' })
+      { value: '753-xy9517*5', isChanged: true })
 
     sendChange(wrapper, '852-6547')
 
@@ -127,6 +122,16 @@ describe('react test', function() {
 
     assert.deepEqual(
       wrapper.state(),
-      { defaultValue: '852-852', value: '852-xy6547' })
+      { value: '852-xy6547', isChanged: true })
+
+    sendChange(wrapper, '')
+
+    assert.equal(
+      result,
+      '')
+
+    assert.deepEqual(
+      wrapper.state(),
+      { value: '', isChanged: true })
   })
 })
