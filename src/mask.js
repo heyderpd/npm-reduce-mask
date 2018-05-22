@@ -39,7 +39,7 @@ export const createMaskValue = maskList => originalValue => {
   if (maskList === null) {
     return originalValue
   }
-  const nomask = isString(values) ? values.split('') : values
+  const nomask = isString(values) ? onlyNumbers(values).split('') : values
 
   const limit = nomask.length
   const maskObj = getSmallerMask(maskList, limit)
@@ -72,14 +72,17 @@ const cloneEvt = evt => ({
   ...evt,
   target: {
     ...evt.target,
-    value: onlyNumbers(evt.target.value)
+    value: onlyNumbers(evt.target.value),
+    maskedValue: evt.target.value
   }
 })
 
-const createMask = ({ mask, onChange }, updateValue) => {
-  const safeOnChange = typeof onChange === 'function'
-    ? onChange
-    : x => x
+const safeFx = fx => typeof fx === 'function' ? fx : x => x
+
+const createMask = ({ mask, onChange, updateValue }) => {
+  const safeOnChange = safeFx(onChange)
+  const safeUpdateValue = safeFx(updateValue)
+
   const maskMap = createkMap(mask)
   const maskValue = createMaskValue(maskMap)
   const setValidCursor = createSetValidCursor(maskMap)
@@ -91,7 +94,7 @@ const createMask = ({ mask, onChange }, updateValue) => {
       const { cursor, values } = getClearValuesAndCursor(elm)
 
       elm.value = maskValue(values)
-      updateValue(elm.value)
+      safeUpdateValue(elm.value)
       safeCall(() => setValidCursor(elm, values, cursor))
 
       const fakeEvt = cloneEvt(evt)

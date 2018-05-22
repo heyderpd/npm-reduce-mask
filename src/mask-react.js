@@ -7,33 +7,67 @@ class PureInputMask extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      defaultValue: '',
-      value: ''
+      value: '',
+      isChanged: false
     }
   }
 
   updateValue(value) {
-    this.setState({ value })
+    this.setState({ value, isChanged: true })
+  }
+
+  getDefaultValue() {
+    const defaultValue = ifNumberConvertToString(this.props.defaultValue || '')
+    return this.maskValue(defaultValue)
+  }
+
+  bindMaskAndOnChange () {
+    const { maskValue, onChange } = createMask({
+      mask: this.props.mask,
+      onChange: this.props.onChange,
+      updateValue: value => this.updateValue(value)
+    })
+    this.maskValue = maskValue.bind(this)
+    this.onChange = onChange.bind(this)
+  }
+
+  evaluateMask() {
+    const { value, isChanged } = this.state
+    this.bindMaskAndOnChange()
+
+    if (isChanged) {
+      this.setState({ value: this.maskValue(value) })
+
+    } else {
+      const defaultValue = this.getDefaultValue()
+      this.setState({ value: defaultValue })
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const { mask, defaultValue, onChange } = this.props
+    if (mask !== prevProps.mask
+      || defaultValue !== prevProps.defaultValue
+      || onChange !== prevProps.onChange) {
+
+      this.evaluateMask()
+      return true
+    }
+    return false
   }
 
   componentWillMount() {
-    const { maskValue, onChange } = createMask(this.props, this.updateValue.bind(this))
-    this.onChange = onChange
-
-    const value = ifNumberConvertToString(this.props.defaultValue || '')
-    this.setState({
-      defaultValue: maskValue(value)
-    })
+    this.evaluateMask()
   }
 
   render () {
-    const { maxLength, value, ...props } = this.props
+    const { maxLength, defaultValue, value, ...props } = this.props
     return (
       <input
         {...props}
         type='tel'
-        onChange={this.onChange}
-        defaultValue={this.state.defaultValue}
+        onChange={evt => this.onChange(evt)}
+        value={this.state.value}
       />
     )
   }
