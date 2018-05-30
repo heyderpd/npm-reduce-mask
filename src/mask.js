@@ -1,4 +1,5 @@
-import React from 'react'
+import { isString } from 'pytils'
+
 import {
   getCursor,
   setValidCursor,
@@ -6,7 +7,6 @@ import {
   getSmallerMask,
   createkMap,
   ifNumberConvertToString,
-  isString,
   onlyNumbers,
   isArrayOfStringsAndHasLenght
 } from './utils'

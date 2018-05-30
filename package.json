@@ -1,6 +1,6 @@
 {
   "name": "reduce-mask",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -35,11 +35,12 @@
     "babel-register": "^6.26.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-15": "1.0.5",
-    "react-test-renderer": "^16.3.2"
+    "react-test-renderer": "^16.4.0",
+    "pytils": "^1.40.3"
   },
   "dependencies": {
-    "react": "15.6.2",
-    "react-dom": "15.6.2",
+    "react": "16.3.2",
+    "react-dom": "16.3.2",
     "react-scripts": "1.1.4"
   }
 }

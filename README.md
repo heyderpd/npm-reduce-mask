@@ -34,7 +34,7 @@ const onChange = evt => {
     value = '12345678912'
     maskedValue = '123.456.789-12'
 
-    do your set set state
+    do your this.setState(evt)
   */
 }
 

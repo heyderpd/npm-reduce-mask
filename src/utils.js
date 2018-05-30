@@ -1,3 +1,5 @@
+import { isString, isNumber, isArray, length } from 'pytils'
+
 export const safeCall = fn => {
   const defaultFx = () => setTimeout(fn, 0)
   const call = window
@@ -52,23 +54,17 @@ export const setValidCursor = (elm, cursor) => {
 
 export const getSmallerMask = (maskList, length) => {
   return maskList
-    .reduce((acc, mask) => (acc.map.length < length)
-            || (length <= mask.map.length && mask.map.length < acc.map.length)
-      ? mask
-      : acc)
+    .reduce(
+      (acc, mask) => (acc.map.length < length) || (length <= mask.map.length && mask.map.length < acc.map.length)
+        ? mask
+        : acc)
 }
 
 export const onlyNumbers = obj => isString(obj) ? obj.replace(/\D/g, '') : obj
 
-export const isNumber = obj => typeof(obj) === 'number'
-
 export const ifNumberConvertToString = obj => isNumber(obj) ? String(obj) : obj
 
-export const isString = obj => typeof(obj) === 'string'
-
-export const isArray = obj => Array.isArray(obj)
-
-export const hasLength = obj => obj.length > 0
+export const hasLength = obj => length(obj) > 0
 
 export const isArrayOfStrings = obj => obj.reduce((acc, value) => isString(value) && acc, true)
 
