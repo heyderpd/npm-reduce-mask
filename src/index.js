@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import createMask from './mask'
+import createMask, { cloneEvt, safeFx } from './mask'
 import { ifNumberConvertToString } from './utils'
 
 class PureInputMask extends Component {
@@ -29,6 +29,16 @@ class PureInputMask extends Component {
     })
     this.maskValue = maskValue.bind(this)
     this.onChange = onChange.bind(this)
+    this.safeOnBlur = safeFx(this.props.onBlur)
+  }
+
+  onBlur(evt) {
+    try {
+      this.safeOnBlur(cloneEvt(evt))
+
+    } catch (error) {
+      return evt
+    }
   }
 
   evaluateMask() {
@@ -67,6 +77,7 @@ class PureInputMask extends Component {
         {...props}
         type='tel'
         onChange={evt => this.onChange(evt)}
+        onBlur={this.onBlur.bind(this)}
         value={this.state.value}
       />
     )

@@ -68,7 +68,7 @@ export const createSetValidCursor = maskList => (elm, values, cursor) => {
   return setValidCursor(elm, maskObj.map[cursor])
 }
 
-const cloneEvt = evt => ({
+export const cloneEvt = evt => ({
   ...evt,
   target: {
     ...evt.target,
@@ -77,7 +77,7 @@ const cloneEvt = evt => ({
   }
 })
 
-const safeFx = fx => typeof fx === 'function' ? fx : x => x
+export const safeFx = fx => typeof fx === 'function' ? fx : x => x
 
 const createMask = ({ mask, onChange, updateValue }) => {
   const safeOnChange = safeFx(onChange)
