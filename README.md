@@ -1,4 +1,4 @@
-# REDUCE MAKS
+# REDUCE MASK
 
 Simple and light mask in react, can use mult mask for same input.
 
