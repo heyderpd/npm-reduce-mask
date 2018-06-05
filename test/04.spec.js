@@ -1,12 +1,8 @@
 import React, { Component } from 'react'
-import { jsdom } from 'jsdom'
-import { configure, mount, shallow } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-15'
+import { createDom, destroyDom, mount } from './enzyme.config'
 import assert from 'assert'
 
 import ReactMask from '../src/index'
-
-configure({ adapter: new Adapter() })
 
 describe('changes state and props in time', function() {
   let result = {}, wrapper
@@ -23,9 +19,7 @@ describe('changes state and props in time', function() {
   }
 
   before(() => {
-    const doc = jsdom('<!doctype html><html><body><div id="root"></div></body></html>')
-    global.document = doc
-    global.window = doc.defaultView
+    createDom()
     wrapper = mount(
       <ReactMask
         mask={['____-____']}
@@ -35,8 +29,8 @@ describe('changes state and props in time', function() {
   })
 
   after(() => {
-    delete global.document
-    delete global.window
+    wrapper.unmount()
+    createDom()
   })
 
   it('basic', () => {

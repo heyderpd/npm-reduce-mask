@@ -1,48 +1,41 @@
 import React, { Component } from 'react'
-import { jsdom } from 'jsdom'
-import { configure, mount } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-15'
+import { createDom, destroyDom, mount } from './enzyme.config'
 import assert from 'assert'
 
 import ReactMask from '../src/index'
 
-configure({ adapter: new Adapter() })
-
 describe('react test', function() {
-  before(() => {
-    const doc = jsdom('<!doctype html><html><body><div id="root"></div></body></html>')
-    global.document = doc
-    global.window = doc.defaultView
-  })
+  let wrapper
 
-  after(() => {
-    delete global.document
-    delete global.window
-  })
+  before(createDom)
+
+  after(destroyDom)
+
+  afterEach(() => wrapper.unmount())
 
   it('undefined', () => {
-    const wrapper = mount(<ReactMask />)
+    wrapper = mount(<ReactMask />)
     assert.deepEqual(
       wrapper.state(),
       { value: '', isChanged: false })
   })
 
   it('with mask', () => {
-    const wrapper = mount(<ReactMask mask={['___-___']} />)
+    wrapper = mount(<ReactMask mask={['___-___']} />)
     assert.deepEqual(
       wrapper.state(),
       { value: '', isChanged: false })
   })
 
   it('with defaultValue', () => {
-    const wrapper = mount(<ReactMask defaultValue='456789' />)
+    wrapper = mount(<ReactMask defaultValue='456789' />)
     assert.deepEqual(
       wrapper.state(),
       { value: '456789', isChanged: false })
   })
 
   it('with mask and defaultValue', () => {
-    const wrapper = mount(<ReactMask mask={['___-___']} defaultValue='456789' />)
+    wrapper = mount(<ReactMask mask={['___-___']} defaultValue='456789' />)
     assert.deepEqual(
       wrapper.state(),
       { value: '456-789', isChanged: false })
@@ -57,7 +50,7 @@ describe('react test', function() {
     let result
     const onChange = evt => result = evt.target.value
 
-    const wrapper = mount(
+    wrapper = mount(
       <ReactMask
         mask={['___-___']}
         defaultValue={456789}
@@ -93,7 +86,7 @@ describe('react test', function() {
     let result
     const onChange = evt => result = evt.target.value
 
-    const wrapper = mount(
+    wrapper = mount(
       <ReactMask
         mask={['___-___', '___-xy____*_']}
         defaultValue={'852852'}
