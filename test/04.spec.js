@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { createDom, destroyDom, shallow } from './enzyme.config'
 import assert from 'assert'
 
-import ReactMask from '../src/index'
+import ReactMask from '../src/class'
 
 describe('changes state and props in time', function() {
   let result = {}, wrapper = null

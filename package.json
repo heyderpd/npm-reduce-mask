@@ -2,8 +2,14 @@
   "name": "reduce-mask",
   "version": "1.2.5",
   "description": "",
-  "main": "dist/index.js",
+  "main": "dist/class.js",
   "scripts": {
+    "build-css": "node-sass src/ -o src/",
+    "watch-css": "npm run build-css && node-sass src/stylesheets -o src/stylesheets --watch --recursive",
+    "start": "react-scripts start",
+    "docs": "rm -rf docs && mkdir docs && cp -a ./build/. ./docs/",
+    "build-src": "npm run build-css && react-scripts build && npm run docs",
+    "build": "PUBLIC_URL=. npm run build-src",
     "transpile": "babel src --out-dir dist",
     "test": "mocha --compilers js:babel-register --reporter spec 'test/*.spec.js'"
   },
@@ -33,13 +39,16 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-register": "^6.26.0",
-    "enzyme": "^3.8.0",
+    "enzyme": "3.8.0",
     "enzyme-adapter-react-16": "1.1.1",
     "jsdom": "9.12.0",
     "mocha": "4.1.0",
-    "react-dom": "^16.4.0",
-    "react-scripts": "^1.1.4",
-    "react-test-renderer": "16.4.0"
+    "react": "16.7.0",
+    "react-dom": "16.4.0",
+    "react-scripts": "1.1.4",
+    "react-test-renderer": "16.4.0",
+    "node-sass": "^4.11.0",
+    "npm-run-all": "^4.1.5"
   },
   "dependencies": {
     "react": "^16.4.0",

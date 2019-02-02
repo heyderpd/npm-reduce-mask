@@ -3,5 +3,9 @@ npm-debug*
 
 node_modules/*
 dist/*
+build/*
+docs/*
 
 package-lock.json
+
+**/*.css
