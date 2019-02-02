@@ -4,7 +4,7 @@ npm-debug*
 node_modules/*
 dist/*
 build/*
-docs/*
+# docs/*
 
 package-lock.json
 
