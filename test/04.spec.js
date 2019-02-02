@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import { createDom, destroyDom, mount } from './enzyme.config'
+import { createDom, destroyDom, shallow } from './enzyme.config'
 import assert from 'assert'
 
 import ReactMask from '../src/index'
 
 describe('changes state and props in time', function() {
-  let result = {}, wrapper
+  let result = {}, wrapper = null
   const onChange = evt => {
     const { value, maskedValue } = evt.target
     result = { value, maskedValue }
@@ -17,10 +17,20 @@ describe('changes state and props in time', function() {
     const event = { target: { value }, preventDefault: x=>x }
     wrapper.simulate('change', event)
   }
+  const ignoreProps = ['onChange', 'onBlur', 'type']
+  const ignoreSomeProps = oriObj => {
+    const newObj = {}
+    Object.keys(oriObj).map(key => {
+      if (ignoreProps.indexOf(key) < 0) {
+        newObj[key] = oriObj[key]
+      }
+    })
+    return newObj
+  }
 
   before(() => {
     createDom()
-    wrapper = mount(
+    wrapper = shallow(
       <ReactMask
         mask={['____-____']}
         onChange={onChange}
@@ -35,8 +45,8 @@ describe('changes state and props in time', function() {
 
   it('basic', () => {
     assert.deepEqual(
-      wrapper.props(),
-      { mask: ['____-____'], onChange, onBlur, onBlur })
+      ignoreSomeProps(wrapper.props()),
+      { mask: ['____-____'], value: '' })
     assert.deepEqual(
       wrapper.state(),
       { value: '', isChanged: false })
@@ -49,8 +59,8 @@ describe('changes state and props in time', function() {
     wrapper.setProps({ defaultValue })
 
     assert.deepEqual(
-      wrapper.props(),
-      { mask: ['____-____'], onChange, onBlur, defaultValue })
+      ignoreSomeProps(wrapper.props()),
+      { mask: ['____-____'], value: '1234-56' })
     assert.deepEqual(
       wrapper.state(),
       { value: '1234-56', isChanged: false })
@@ -63,8 +73,8 @@ describe('changes state and props in time', function() {
     sendChange('753951753951')
 
     assert.deepEqual(
-      wrapper.props(),
-      { mask: ['____-____'], onChange, onBlur, defaultValue })
+      ignoreSomeProps(wrapper.props()),
+      { mask: ['____-____'], value: '7539-5175' })
     assert.deepEqual(
       wrapper.state(),
       { value: '7539-5175', isChanged: true })
@@ -77,8 +87,8 @@ describe('changes state and props in time', function() {
     wrapper.setProps({ defaultValue: '852' })
 
     assert.deepEqual(
-      wrapper.props(),
-      { mask: ['____-____'], onChange, onBlur, defaultValue: '852' })
+      ignoreSomeProps(wrapper.props()),
+      { mask: ['____-____'], value: '7539-5175' })
     assert.deepEqual(
       wrapper.state(),
       { value: '7539-5175', isChanged: true })
@@ -91,8 +101,8 @@ describe('changes state and props in time', function() {
     wrapper.setProps({ mask: ['___-___-__'] })
 
     assert.deepEqual(
-      wrapper.props(),
-      { mask: ['___-___-__'], onChange, onBlur, defaultValue: '852' })
+      ignoreSomeProps(wrapper.props()),
+      { mask: ['___-___-__'], value: '753-951-75' })
     assert.deepEqual(
       wrapper.state(),
       { value: '753-951-75', isChanged: true })
@@ -105,8 +115,8 @@ describe('changes state and props in time', function() {
     sendChange('8%$528#$52852852')
 
     assert.deepEqual(
-      wrapper.props(),
-      { mask: ['___-___-__'], onChange, onBlur, defaultValue: '852' })
+      ignoreSomeProps(wrapper.props()),
+      { mask: ['___-___-__'], value: '852-852-85' })
     assert.deepEqual(
       wrapper.state(),
       { value: '852-852-85', isChanged: true })
@@ -119,8 +129,8 @@ describe('changes state and props in time', function() {
     wrapper.simulate('blur')
 
     assert.deepEqual(
-      wrapper.props(),
-      { mask: ['___-___-__'], onChange, onBlur, defaultValue: '852' })
+      ignoreSomeProps(wrapper.props()),
+      { mask: ['___-___-__'], value: '852-852-85' })
     assert.deepEqual(
       wrapper.state(),
       { value: '852-852-85', isChanged: true })

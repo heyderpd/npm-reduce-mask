@@ -1,4 +1,4 @@
-import { configure, mount as _mount } from 'enzyme'
+import { configure, mount as _mount, shallow as _shallow } from 'enzyme'
 import { jsdom } from 'jsdom'
 import Adapter from 'enzyme-adapter-react-16'
 
@@ -16,3 +16,4 @@ export const destroyDom = () => {
 }
 
 export const mount = _mount
+export const shallow = _shallow

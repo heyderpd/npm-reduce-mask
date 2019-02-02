@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import { createDom, destroyDom, mount } from './enzyme.config'
+import { createDom, destroyDom, shallow } from './enzyme.config'
 import assert from 'assert'
 
 import ReactMask from '../src/index'
 
 describe('react test', function() {
-  let wrapper
+  let wrapper = null
 
   before(createDom)
 
@@ -14,28 +14,28 @@ describe('react test', function() {
   afterEach(() => wrapper.unmount())
 
   it('undefined', () => {
-    wrapper = mount(<ReactMask />)
+    wrapper = shallow(<ReactMask />)
     assert.deepEqual(
       wrapper.state(),
       { value: '', isChanged: false })
   })
 
   it('with mask', () => {
-    wrapper = mount(<ReactMask mask={['___-___']} />)
+    wrapper = shallow(<ReactMask mask={['___-___']} />)
     assert.deepEqual(
       wrapper.state(),
       { value: '', isChanged: false })
   })
 
   it('with defaultValue', () => {
-    wrapper = mount(<ReactMask defaultValue='456789' />)
+    wrapper = shallow(<ReactMask defaultValue='456789' />)
     assert.deepEqual(
       wrapper.state(),
       { value: '456789', isChanged: false })
   })
 
   it('with mask and defaultValue', () => {
-    wrapper = mount(<ReactMask mask={['___-___']} defaultValue='456789' />)
+    wrapper = shallow(<ReactMask mask={['___-___']} defaultValue='456789' />)
     assert.deepEqual(
       wrapper.state(),
       { value: '456-789', isChanged: false })
@@ -50,7 +50,7 @@ describe('react test', function() {
     let result
     const onChange = evt => result = evt.target.value
 
-    wrapper = mount(
+    wrapper = shallow(
       <ReactMask
         mask={['___-___']}
         defaultValue={456789}
@@ -86,7 +86,7 @@ describe('react test', function() {
     let result
     const onChange = evt => result = evt.target.value
 
-    wrapper = mount(
+    wrapper = shallow(
       <ReactMask
         mask={['___-___', '___-xy____*_']}
         defaultValue={'852852'}
