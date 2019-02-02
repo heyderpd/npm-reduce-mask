@@ -7,8 +7,8 @@ import {
   getSmallerMask,
   createkMap,
   ifNumberConvertToString,
-  onlyNumbers,
-  isArrayOfStringsAndHasLenght
+  onlyNumbers
+  // isArrayOfStringsAndHasLenght
 } from './utils'
 
 export const getClearValuesAndCursor = elm => {
@@ -32,7 +32,7 @@ export const getClearValuesAndCursor = elm => {
   }
 }
 
-const isValidArrayOfMask = obj => isString(obj) || isArrayOfStringsAndHasLenght(obj)
+// const isValidArrayOfMask = obj => isString(obj) || isArrayOfStringsAndHasLenght(obj)
 
 export const createMaskValue = maskList => originalValue => {
   const values = ifNumberConvertToString(originalValue)
@@ -70,10 +70,10 @@ export const createSetValidCursor = maskList => (elm, values, cursor) => {
 
 export const cloneEvt = evt => ({
   ...evt,
+  maskedValue: evt.target.value,
   target: {
     ...evt.target,
-    value: onlyNumbers(evt.target.value),
-    maskedValue: evt.target.value
+    value: onlyNumbers(evt.target.value)
   }
 })
 

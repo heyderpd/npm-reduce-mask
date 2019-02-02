@@ -98,3 +98,5 @@ export const createkMap = mask => {
     }, [])
     .filter(Boolean)
 }
+
+export const fakeFx = x => x

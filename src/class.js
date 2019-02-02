@@ -1,15 +1,21 @@
 import React, { Component } from 'react'
 import createMask, { cloneEvt, safeFx } from './mask'
-import { ifNumberConvertToString } from './utils'
+import { ifNumberConvertToString, fakeFx } from './utils'
 
 class PureInputMask extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      value: '',
+      value: props.value || '',
       isChanged: false
     }
+    this.updateValue = this.updateValue.bind(this)
+    this.getDefaultValue = this.getDefaultValue.bind(this)
+    this.bindMaskAndOnChange = this.bindMaskAndOnChange.bind(this)
+    this.evaluateMask = this.evaluateMask.bind(this)
+    this.maskValue = fakeFx
+    this.onChange = fakeFx
   }
 
   updateValue(value) {
@@ -41,33 +47,36 @@ class PureInputMask extends Component {
     }
   }
 
-  evaluateMask() {
+  evaluateMask(isChangedPropMask, propValue) {
     const { value, isChanged } = this.state
-    this.bindMaskAndOnChange()
+    isChangedPropMask && this.bindMaskAndOnChange()
 
     if (isChanged) {
       this.setState({ value: this.maskValue(value) })
 
     } else {
-      const defaultValue = this.getDefaultValue()
-      this.setState({ value: defaultValue })
+      const _defval = value || this.getDefaultValue()
+      this.setState({ value: this.maskValue(_defval) })
     }
   }
 
   componentDidUpdate(prevProps) {
-    const { mask, defaultValue, onChange } = this.props
-    if (mask !== prevProps.mask
+    const { mask, defaultValue, onChange, value } = this.props
+    const isChangedPropMask = mask !== prevProps.mask
       || defaultValue !== prevProps.defaultValue
-      || onChange !== prevProps.onChange) {
-
-      this.evaluateMask()
+      || onChange !== prevProps.onChange
+    if (value !== prevProps.value) {
+      this.updateValue(value)
+    }
+    if (isChangedPropMask) {
+      this.evaluateMask(isChangedPropMask, value)
       return true
     }
     return false
   }
 
   componentWillMount() {
-    this.evaluateMask()
+    this.evaluateMask(true)
   }
 
   render () {

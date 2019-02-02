@@ -9,7 +9,7 @@ class App extends Component {
     super(props)
 
     this.state = {
-      value: ''
+      value: '123456789012345'
     }
     this.onChange = this.onChange.bind(this)
   }
@@ -17,7 +17,8 @@ class App extends Component {
   async componentDidMount () {}
 
   onChange(evt) {
-    const { value, maskedValue } = evt.target
+    const { maskedValue, target } = evt
+    const { value } = target
     this.setState({ value, maskedValue })
   }
 
@@ -32,21 +33,45 @@ class App extends Component {
           <span>masked:</span>
           <span>{this.state.maskedValue}</span>
         </p>
-        <ReactMask
-          mask={['____-____']}
-          onChange={this.onChange}
-          onBlur={this.onChange}
-        />
-        {/* <input
-          type="range"
-          min="1"
-          max="100"
-          value="50"
-          class="slider"
-          onChange={fdasfdsdf}
-        ></input>*/}
+        <p>
+          <ReactMask
+            id="mask-01"
+            mask={['R$ __.___']}
+            defaultValue={this.state.value}
+            onChange={this.onChange}
+            onBlur={this.onChange}
+          />
+        </p>
+        <p>
+          <ReactMask
+            id="mask-02"
+            mask={['(__) ____.____']}
+            defaultValue={this.state.value}
+            onChange={this.onChange}
+            onBlur={this.onChange}
+          />
+        </p>
+        <p>
+          <ReactMask
+            id="mask-02"
+            mask={['__.___.___-_', '___.___.___-__']}
+            defaultValue={this.state.value}
+            onChange={this.onChange}
+            onBlur={this.onChange}
+          />
+        </p>
+        <p>
+          <input
+            id="slider-01"
+            type="range"
+            min="0"
+            max="99999999"
+            value={this.state.value}
+            onChange={this.onChange}
+          ></input>
+        </p>
       </div>
-    );
+    )
   }
 }
 

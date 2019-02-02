@@ -1,14 +1,20 @@
-* {
-  margin: 0;
-  border: 0;
-  padding: 0;
-  background: transparent;
-}
+@import 'font';
+
+// * {
+//   margin: 0;
+//   border: 0;
+//   padding: 0;
+//   background: transparent;
+// }
 
 body {
   height: 100vh;
-  background: black;
+  // background: black;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+p > * {
+  width: 100%;
 }

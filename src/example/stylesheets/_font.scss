@@ -1,0 +1,10 @@
+@font-face {
+  font-family: 'starwar-l';
+  src: url('/Starjedi.ttf');
+}
+
+body, .font {
+  font-family: 'starwar' 'starwar-l';
+  // color: rgb(167, 152, 152);
+  font-size: 16px;
+}

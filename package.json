@@ -5,8 +5,9 @@
   "main": "dist/class.js",
   "scripts": {
     "build-css": "node-sass src/ -o src/",
-    "watch-css": "npm run build-css && node-sass src/stylesheets -o src/stylesheets --watch --recursive",
-    "start": "react-scripts start",
+    "watch-css": "npm run build-css && node-sass src/example/stylesheets -o src/stylesheets --watch --recursive",
+    "start-cra": "react-scripts start",
+    "start": "npm-run-all -p watch-css start-cra",
     "docs": "rm -rf docs && mkdir docs && cp -a ./build/. ./docs/",
     "build-src": "npm run build-css && react-scripts build && npm run docs",
     "build": "PUBLIC_URL=. npm run build-src",
